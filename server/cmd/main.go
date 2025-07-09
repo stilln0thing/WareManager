@@ -36,8 +36,17 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{
         	"status":  "success",
         	"message": "Order processed successfully",
-    })
-
+    	})
+	})
+	router.POST("/reassign", func(c *gin.Context) {
+		if err := service.ReassignAisles(db.DB, 10); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        	return
+		}
+		c.JSON(http.StatusOK, gin.H{
+        	"status":  "success",
+        	"message": "SKUs reassigned successully",
+    	})
 	})
 		log.Println("Server is running on :8080")
     	if err := router.Run(":8081"); err != nil {
