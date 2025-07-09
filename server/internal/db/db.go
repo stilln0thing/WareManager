@@ -1,7 +1,6 @@
 package db
 
 import (
-   "fmt"
    "os"
 
    "gorm.io/driver/postgres"
@@ -11,13 +10,17 @@ import (
 
 var DB *gorm.DB
 
-func Init() {
+func Init() error {
 	_ = godotenv.Load()
 	dsn := os.Getenv("DATABASE_URL")
 	var err error
-	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB , err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to the DB")
 	} 
+	return nil
+}
 
+func GetDB() *gorm.DB {
+	return DB
 }
